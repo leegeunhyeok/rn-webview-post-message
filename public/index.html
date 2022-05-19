@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <title>postMessage</title>
+  </head>
+  <body>
+    <div>
+      <button id="refresh">Refresh</button>
+    </div>
+    <div>
+      <input id="field" type="text">
+      <button id="send">Send</button>
+    </div>
+  </body>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script>
+    // counter for `injectedJavascript`
+    window.injected = 0;
+
+    function logger (message, isError) {
+      var element = document.createElement('p');
+      element.textContent = message;
+      element.style.color = isError ? 'red' : 'black';
+      document.body.append(element);
+      console.log(message);
+    }
+
+    var fallbackAppBridgeModule = {
+      postMessage: function () {
+        alert('No bridge module found');
+      }
+    };
+
+    var clientBridgeModule = {
+      _queue: [],
+      postMessage: function (data) {
+        try {
+          this._queue.push(JSON.parse(data));
+          logger('postMessage queued (size: ' + this._queue.length + '): ' + data);
+        } catch (error) {
+          logger('postMessage ' + error.message, true);
+        }
+      }
+    };
+    
+    window.client = clientBridgeModule;
+    window.app = window.ReactNativeWebView || fallbackAppBridgeModule;
+
+    window.onload = function () {
+      document.getElementById('refresh').onclick = function () {
+        location.reload();
+      };
+    
+      document.getElementById('send').onclick = function () {
+        var value = document.getElementById('field').value;
+        // Web -> App
+        window.app.postMessage(JSON.stringify(value));
+      };
+    };
+
+  </script>
+</html>

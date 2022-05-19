@@ -30,7 +30,7 @@ const createBridgeMessage = (type: string, data: any) => {
     type,
     data,
   };
-  return JSON.stringify(message);
+  return `'${JSON.stringify(message)}'`;
 };
 
 const App = () => {

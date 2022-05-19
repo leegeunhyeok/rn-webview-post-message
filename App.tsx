@@ -43,6 +43,10 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const textStyle = {
+    color: isDarkMode ? Colors.lighter : Colors.darker,
+  };
+
   const handleChangeText = (value: string) => {
     setText(value);
   };
@@ -82,8 +86,12 @@ const App = () => {
         }}
       />
       <View style={styles.bottomBar}>
-        <View>
-          <TextInput defaultValue={text} onChangeText={handleChangeText} />
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={textStyle}
+            defaultValue={text}
+            onChangeText={handleChangeText}
+          />
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={handlePressButton}>
           <Text>Send</Text>
@@ -98,8 +106,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  textInput: {
-    color: 'white',
+  textInputContainer: {
+    flex: 1,
   },
   sendButton: {
     justifyContent: 'center',

@@ -83,7 +83,7 @@ const App = () => {
       />
       <View style={styles.bottomBar}>
         <View>
-          <TextInput onChangeText={handleChangeText} />
+          <TextInput defaultValue={text} onChangeText={handleChangeText} />
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={handlePressButton}>
           <Text>Send</Text>

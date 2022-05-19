@@ -23,7 +23,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import WebView, {WebViewMessageEvent} from 'react-native-webview';
 
-const TEST_WEB_URL = 'https://rnw.vercel.app';
+const TEST_WEB_URL = 'https://rn-webview-post-message.vercel.app';
 
 const createBridgeMessage = (type: string, data: any) => {
   const message = {
@@ -60,8 +60,13 @@ const App = () => {
           alert('No bridge module found');
           return;
         };
-        window.client.postMessage(${createBridgeMessage('onMessage', text)});
-        window.injected = (window.injected || 0) + 1;
+
+        try {
+          window.client.postMessage(${createBridgeMessage('onMessage', text)});
+          window.injected = (window.injected || 0) + 1;
+        } catch (e) {
+          alert(e.message);
+        }
       })();
     `);
   };

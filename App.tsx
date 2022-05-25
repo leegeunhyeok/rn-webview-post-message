@@ -24,6 +24,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import WebView, {WebViewMessageEvent} from 'react-native-webview';
 
 const TEST_WEB_URL = 'https://rn-webview-post-message.vercel.app';
+const DUMMY_TOKEN = 'RN_' + (+new Date()).toString();
 
 const createBridgeMessage = (type: string, data: any) => {
   const message = {
@@ -78,11 +79,18 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <View>
+        <Text>{DUMMY_TOKEN}</Text>
+      </View>
       <WebView
         ref={webViewRef}
         onMessage={handleOnMessage}
+        injectedJavaScript={`document.cookie = 'rn_token=${DUMMY_TOKEN}';`}
         source={{
           uri: TEST_WEB_URL,
+          // headers: {
+          //   Cookies: `rn_token=${DUMMY_TOKEN}`,
+          // },
         }}
       />
       <View style={styles.bottomBar}>
